@@ -17,6 +17,8 @@ public class SubCompetence {
 
     private String nom;
     private boolean valide;
+    @Column(name = "competence_id")
+    private Long competenceId;
 
 
     public SubCompetence(SubCompetenceDTO subCompetenceDTO) {

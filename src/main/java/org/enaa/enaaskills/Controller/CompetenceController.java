@@ -2,19 +2,22 @@ package org.enaa.enaaskills.Controller;
 
 import org.enaa.enaaskills.DTO.CompetenceDTO;
 import org.enaa.enaaskills.DTO.SubCompetenceDTO;
-import org.enaa.enaaskills.Models.Apprenant;
+import org.enaa.enaaskills.Models.Competence;
 import org.enaa.enaaskills.Services.CompetenceService;
+import org.enaa.enaaskills.Services.SubCompetenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/competences")
 public class CompetenceController {
     @Autowired
     private CompetenceService competenceService;
+    @Autowired
+    private SubCompetenceService subCompetenceService;
 
     @PostMapping
     public CompetenceDTO createcompetence(@RequestBody CompetenceDTO competenceDTO){
@@ -26,32 +29,8 @@ public class CompetenceController {
         return competenceService.addSubCompetence(competenceId,subCompetenceDTO);
     }
 
-    @PutMapping("/{competenceId}/sous-competences/{subCompetenceId}/apprenants/{apprenantId}")
-    public ResponseEntity<Void> toggleSubCompetenceValidation(
-            @PathVariable Long competenceId,
-            @PathVariable Long subCompetenceId,
-            @PathVariable Long apprenantId) {
 
-            competenceService.toggleSubCompetenceValidation(apprenantId, competenceId, subCompetenceId);
-        return ResponseEntity.ok().build();
-    }
 
-    @GetMapping("/{competenceId}/apprenants/{apprenantId}/acquise")
-    public ResponseEntity<Boolean> isCompetenceAcquise(
-            @PathVariable Long competenceId {
-            boolean acquise = competenceService.isCompetenceAcquise(competenceId);
-            return ResponseEntity.ok(acquise);
-    }
-
-    @GetMapping
-    public List<CompetenceDTO> getAllCompetences() {
-        return competenceService.getAllCompetences();
-    }
-
-    @GetMapping("/apprenants")
-    public List<Apprenant> getAllApprenants() {
-       return competenceService.getAllApprenants();
-    }
 
     @PutMapping("/{competenceId}")
     public CompetenceDTO updateCompetence(
@@ -69,10 +48,20 @@ public class CompetenceController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @GetMapping("/rapport")
-    public ResponseEntity<String> generateReport() {
-        String report = competenceService.generateReport();
-        return ResponseEntity.ok(report);
+    @PutMapping("/{competenceId}/sous-competences/{subCompetenceId}/validation")
+    public void updateValidationStatus(
+            @PathVariable Long competenceId,
+            @PathVariable Long subCompetenceId,
+            @RequestBody boolean valid) {
+        subCompetenceService.updateSubCompetenceValidationStatus(competenceId, subCompetenceId, valid);
     }
+    @GetMapping
+    public CompetenceDTO getAllCompetences() {
+        return competenceService.getAllCompetences();
+    }
+    @GetMapping("/{competenceId}")
+    public Optional<Competence> getCompetenceById(@PathVariable Long competenceId) {
+        return competenceService.getCompetenceById(competenceId);
+    }
+
 }

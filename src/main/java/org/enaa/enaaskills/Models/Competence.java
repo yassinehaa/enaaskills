@@ -18,11 +18,11 @@ public class Competence {
     private Long id;
 
     private String nom;
+    private boolean valide;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "competence_id")
     private List<SubCompetence> sousCompetences = new ArrayList<>();
 
-    public Competence(String nom) {
-    }
+
 }

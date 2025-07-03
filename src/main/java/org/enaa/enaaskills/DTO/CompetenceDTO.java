@@ -13,5 +13,6 @@ import java.util.List;
 public class CompetenceDTO {
     private Long id;
     private String nom;
+    private boolean valide;
     private List<SubCompetenceDTO> sousCompetences;
 }
