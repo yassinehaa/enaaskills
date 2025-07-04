@@ -1,15 +1,15 @@
 package org.enaa.enaaskills.Models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.enaa.enaaskills.DTO.SubCompetenceDTO;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "sub_competence")
 public class SubCompetence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

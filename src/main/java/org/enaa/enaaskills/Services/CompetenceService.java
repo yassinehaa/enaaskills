@@ -39,10 +39,9 @@ public class CompetenceService {
     @Transactional
     public CompetenceDTO addSubCompetence(Long competenceId, SubCompetenceDTO subCompetenceDTO) {
         Competence competence = competenceRepository.findCompetenceById(competenceId);
-        // Map SubCompetenceDTO to SubCompetence and set default validation status
         SubCompetence subCompetence = modelMapper.map(subCompetenceDTO, SubCompetence.class);
         subCompetence.setValide(false);
-        subCompetence.setCompetenceId(competenceId); // Set the foreign key
+        subCompetence.setCompetenceId(competenceId);
 
         competence.getSousCompetences().add(subCompetence);
 
@@ -73,7 +72,6 @@ public class CompetenceService {
         List<SubCompetence> existingSubCompetences = existing.getSousCompetences();
         existingSubCompetences.clear();
 
-        // Add new sub-competences from DTO
         List<SubCompetenceDTO> newSubCompetences = competenceDTO.getSousCompetences();
         if (newSubCompetences != null) {
             for (SubCompetenceDTO subCompetenceDTO : newSubCompetences) {
@@ -83,10 +81,8 @@ public class CompetenceService {
             }
         }
 
-        // Save the updated competence
         Competence saved = competenceRepository.save(existing);
 
-        // Map to DTO
         return modelMapper.map(saved, CompetenceDTO.class);
     }
 
@@ -94,6 +90,9 @@ public class CompetenceService {
         competenceRepository.deleteById(competenceId);
     }
 
+    public List<Competence> ListCompetence() {
+        return competenceRepository.findAll();
+    }
 
 
 }
